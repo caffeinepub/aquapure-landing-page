@@ -71,11 +71,7 @@ function StarRating({
   rating,
   count,
   size = "default",
-}: {
-  rating: number;
-  count: number;
-  size?: "default" | "small";
-}) {
+}: { rating: number; count: number; size?: "default" | "small" }) {
   const fullStars = Math.floor(rating);
   const hasHalf = rating % 1 >= 0.5;
   const starTypes: Array<"full" | "half" | "empty"> = Array.from(
@@ -86,7 +82,6 @@ function StarRating({
       return "empty";
     },
   );
-
   return (
     <div
       data-ocid="rating.section"
@@ -117,7 +112,10 @@ function StarRating({
 }
 
 const benefits = [
-  { icon: "❄️", text: "Keeps drinks cold for 24 hours" },
+  {
+    icon: "🌡️",
+    text: "Keeps drinks cold for 24 hours & hot for 12 hours — thanks to double-wall insulation",
+  },
   { icon: "🔒", text: "Leakproof stainless steel design" },
   { icon: "✅", text: "BPA-free material" },
   { icon: "🪶", text: "Lightweight and durable" },
@@ -166,10 +164,7 @@ const reviews = [
 function ReviewCard({
   review,
   index,
-}: {
-  review: (typeof reviews)[0];
-  index: number;
-}) {
+}: { review: (typeof reviews)[0]; index: number }) {
   const starTypes: Array<"full" | "half" | "empty"> = Array.from(
     { length: 5 },
     (_, i) => (i < review.rating ? "full" : "empty"),
@@ -254,27 +249,42 @@ export default function App() {
       {/* Main product section */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 md:py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 items-start">
-          {/* Left: Product Image — bigger */}
+          {/* Left: Product Image */}
           <div
-            className="relative rounded-3xl overflow-hidden flex items-center justify-center p-4 md:p-6 min-h-[560px] md:min-h-[760px] lg:min-h-[880px]"
+            className="relative rounded-3xl flex items-center justify-center p-2"
             style={{ backgroundColor: "oklch(0.93 0.05 185)" }}
           >
+            {/* White card with thin border — bottle sits inside */}
             <div
-              className="absolute top-8 right-8 w-40 h-40 rounded-full blur-3xl opacity-60"
-              style={{ backgroundColor: "oklch(0.88 0.08 200)" }}
-            />
+              className="relative rounded-2xl w-full overflow-hidden flex items-center justify-center"
+              style={{
+                backgroundColor: "#ffffff",
+                border: "1px solid oklch(0.82 0.04 195)",
+                padding: "2rem 1.5rem",
+              }}
+            >
+              {/* Radial spotlight glow behind bottle */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 60% 70% at 50% 50%, oklch(0.88 0.08 200 / 0.55) 0%, transparent 75%)",
+                }}
+              />
+              <img
+                src="/assets/generated/aquapure-bottle.dim_800x1000.png"
+                alt="AquaPure Stainless Steel Insulated Water Bottle 750ml"
+                className="relative z-10 w-full max-w-[340px] md:max-w-[460px] h-auto object-contain transition-transform duration-500 ease-out hover:scale-110 cursor-zoom-in"
+                style={{
+                  filter:
+                    "drop-shadow(0 8px 32px oklch(0.4 0.12 200 / 0.25)) drop-shadow(0 2px 8px oklch(0.4 0.12 200 / 0.15))",
+                  animation: "fade-up 0.6s ease-out forwards",
+                }}
+              />
+            </div>
+            {/* In Stock badge */}
             <div
-              className="absolute bottom-12 left-8 w-32 h-32 rounded-full blur-2xl opacity-50"
-              style={{ backgroundColor: "oklch(0.9 0.06 170)" }}
-            />
-            <img
-              src="/assets/generated/aquapure-bottle.dim_800x1000.png"
-              alt="AquaPure Stainless Steel Insulated Water Bottle 750ml"
-              className="relative z-10 w-full max-w-[520px] md:max-w-[680px] lg:max-w-full h-auto object-contain drop-shadow-2xl transition-transform duration-500 ease-out hover:scale-110 cursor-zoom-in"
-              style={{ animation: "fade-up 0.6s ease-out forwards" }}
-            />
-            <div
-              className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold shadow-xs"
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold shadow z-20"
               style={{
                 backgroundColor: "oklch(0.96 0.08 155)",
                 color: "oklch(0.35 0.12 155)",
@@ -337,14 +347,16 @@ export default function App() {
 
             <Separator className="opacity-50" />
 
-            {/* Benefits list — serif italic font */}
+            {/* Benefits list */}
             <ul className="flex flex-col gap-2.5">
               {benefits.map((b) => (
                 <li
                   key={b.text}
-                  className="flex items-center gap-3 text-sm text-foreground"
+                  className="flex items-start gap-3 text-sm text-foreground"
                 >
-                  <span className="text-base leading-none">{b.icon}</span>
+                  <span className="text-base leading-none mt-0.5">
+                    {b.icon}
+                  </span>
                   <span className="font-serif italic">{b.text}</span>
                 </li>
               ))}
@@ -469,7 +481,6 @@ export default function App() {
 
             {/* Action buttons */}
             <div className="flex flex-col gap-3 pt-1">
-              {/* Add to Cart — taller, ALL CAPS, bold */}
               <Button
                 data-ocid="product.primary_button"
                 onClick={handleAddToCart}
@@ -485,7 +496,6 @@ export default function App() {
                 ADD TO CART — ₹{(799 * quantity).toLocaleString("en-IN")}
               </Button>
 
-              {/* Wishlist button */}
               <button
                 data-ocid="product.secondary_button"
                 onClick={handleWishlist}
@@ -504,7 +514,6 @@ export default function App() {
                 {wishlisted ? "Saved to Wishlist" : "Add to Wishlist"}
               </button>
 
-              {/* Return & Refund Policy */}
               <Dialog>
                 <DialogTrigger asChild>
                   <button
@@ -632,7 +641,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* Rating breakdown bar */}
           <div
             className="rounded-2xl p-5 mb-8 max-w-sm"
             style={{ backgroundColor: "oklch(0.96 0.025 195)" }}
@@ -675,7 +683,6 @@ export default function App() {
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-border/50 py-6 mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <p className="text-xs text-muted-foreground">
