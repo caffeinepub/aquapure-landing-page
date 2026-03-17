@@ -47,30 +47,6 @@ const characteristics = [
   "Lightweight and durable",
 ];
 
-const reviews = [
-  {
-    name: "Priya M.",
-    rating: 5,
-    date: "March 4, 2026",
-    text: "Absolutely love this bottle! Keeps my water cold all day even in summer. The design is sleek and it fits perfectly in my bag.",
-    initials: "PM",
-  },
-  {
-    name: "Rahul K.",
-    rating: 4,
-    date: "February 18, 2026",
-    text: "Great quality and looks premium. The only thing I'd change is a slightly wider mouth for adding ice. Otherwise perfect!",
-    initials: "RK",
-  },
-  {
-    name: "Sneha T.",
-    rating: 5,
-    date: "January 29, 2026",
-    text: "Bought this for my gym sessions and it's been a game changer. No leaks, stays cold for hours, and the finish is gorgeous.",
-    initials: "ST",
-  },
-];
-
 function StarRating({ rating, count }: { rating: number; count: string }) {
   return (
     <div className="flex items-center gap-2">
@@ -88,42 +64,6 @@ function StarRating({ rating, count }: { rating: number; count: string }) {
       <span className="text-sm text-slate-500">
         {rating} · {count} reviews
       </span>
-    </div>
-  );
-}
-
-function ReviewCard({
-  review,
-  index,
-}: { review: (typeof reviews)[0]; index: number }) {
-  return (
-    <div
-      data-ocid={`reviews.item.${index}`}
-      className="rounded-xl bg-white p-3 flex flex-col gap-2 shadow-sm border border-slate-100"
-    >
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-full bg-teal-100 flex items-center justify-center text-sm font-bold text-teal-700 flex-shrink-0">
-            {review.initials}
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-800">
-              {review.name}
-            </p>
-            <p className="text-xs text-slate-400">{review.date}</p>
-          </div>
-        </div>
-        <div className="flex text-amber-400 text-sm">
-          {"★"
-            .repeat(review.rating)
-            .split("")
-            .map((star, i) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: star rating position is stable
-              <span key={i}>{star}</span>
-            ))}
-        </div>
-      </div>
-      <p className="text-sm text-slate-600 leading-relaxed">{review.text}</p>
     </div>
   );
 }
@@ -154,12 +94,9 @@ function GoodUXPage() {
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 h-10 flex items-center justify-between">
-          <a
-            href="/"
-            className="text-xl font-bold text-teal-600 tracking-tight"
-          >
+          <span className="text-xl font-bold text-teal-600 tracking-tight">
             AquaPure
-          </a>
+          </span>
           <nav className="flex items-center gap-3">
             <Badge
               variant="secondary"
@@ -167,6 +104,12 @@ function GoodUXPage() {
             >
               Free shipping on orders over ₹499
             </Badge>
+            <a
+              href="/poor-ux"
+              className="text-xs text-slate-400 hover:text-slate-600 underline"
+            >
+              Poor UX version →
+            </a>
           </nav>
         </div>
       </header>
@@ -449,48 +392,6 @@ function GoodUXPage() {
             </div>
           </div>
         </div>
-
-        {/* Customer Reviews */}
-        <section data-ocid="reviews.section" className="mt-10">
-          <div className="flex items-end justify-between mb-3">
-            <div>
-              <h2 className="text-xl font-bold text-slate-800">
-                Customer Reviews
-              </h2>
-              <p className="text-sm text-slate-400 mt-0.5">
-                Based on 1,200 verified reviews
-              </p>
-            </div>
-            <StarRating rating={4.5} count="1,200" />
-          </div>
-          <div className="rounded-2xl bg-white border border-slate-100 p-4 mb-3 max-w-sm shadow-sm">
-            {[
-              { stars: 5, pct: 72 },
-              { stars: 4, pct: 18 },
-              { stars: 3, pct: 6 },
-              { stars: 2, pct: 2 },
-              { stars: 1, pct: 2 },
-            ].map(({ stars, pct }) => (
-              <div key={stars} className="flex items-center gap-3 mb-1.5">
-                <span className="text-xs text-amber-400 w-6 text-right">
-                  {stars}★
-                </span>
-                <div className="flex-1 h-2 rounded-full overflow-hidden bg-slate-100">
-                  <div
-                    className="h-full rounded-full bg-amber-400"
-                    style={{ width: `${pct}%` }}
-                  />
-                </div>
-                <span className="text-xs text-slate-400 w-8">{pct}%</span>
-              </div>
-            ))}
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {reviews.map((review, i) => (
-              <ReviewCard key={review.name} review={review} index={i + 1} />
-            ))}
-          </div>
-        </section>
       </main>
 
       <footer className="border-t border-slate-200 py-4 mt-6">
@@ -525,44 +426,47 @@ function PoorUXPage() {
     <div className="min-h-screen bg-gray-100">
       {/* Minimal header */}
       <header className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 h-10 flex items-center">
+        <div className="max-w-6xl mx-auto px-4 h-10 flex items-center justify-between">
           <span className="text-lg font-semibold text-gray-700">AquaPure</span>
+          <a href="/" className="text-xs text-gray-400 underline">
+            ← Good UX version
+          </a>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-3">
+      <main className="max-w-6xl mx-auto px-3 py-2">
         <div className="flex flex-col gap-2 md:grid md:grid-cols-2 md:gap-6 md:items-start">
-          {/* LEFT — Smaller product image, no wishlist */}
+          {/* LEFT — Smaller product image (~25-30% smaller), reduced whitespace */}
           <div
             className="flex items-center justify-center rounded-lg overflow-hidden bg-gray-200"
-            style={{ minHeight: 160 }}
+            style={{ minHeight: 120 }}
           >
             <img
               src="/assets/generated/aquapure-bottle.dim_800x1000.png"
               alt="AquaPure Stainless Steel Insulated Water Bottle"
               className="w-full object-contain"
-              style={{ maxHeight: "clamp(160px, 28vw, 280px)" }}
+              style={{ maxHeight: "clamp(115px, 20vw, 200px)" }}
             />
           </div>
 
           {/* RIGHT — Product details with poor layout */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1.5">
             {/* Title */}
-            <h1 className="text-lg font-semibold text-gray-800">
-              Stainless Steel Insulated Water Bottle – 750ml
+            <h1 className="text-base font-semibold text-gray-800">
+              Stainless Steel Insulated Water Bottle – 750 ml
             </h1>
 
             {/* Description / features as paragraph (no bullets) */}
-            <p className="text-sm text-gray-600 leading-snug">
-              Keeps drinks cold for 24 hours & hot for 12 hours thanks to
+            <p className="text-xs text-gray-600 leading-snug">
+              Keeps drinks cold for 24 hours &amp; hot for 12 hours thanks to
               double-wall insulation. Leakproof stainless steel design. BPA-free
               material. Lightweight and durable.
             </p>
 
             {/* Price below description */}
             <div className="flex items-baseline gap-2">
-              <span className="text-xl font-bold text-gray-800">₹799</span>
-              <span className="text-sm text-gray-400 line-through">₹1,199</span>
+              <span className="text-lg font-bold text-gray-800">₹799</span>
+              <span className="text-xs text-gray-400 line-through">₹1,199</span>
             </div>
 
             <Separator />
@@ -639,13 +543,14 @@ function PoorUXPage() {
               </div>
             </div>
 
-            {/* Smaller, less prominent Add to Cart */}
-            <Button
+            {/* Smaller, muted Add to Cart button */}
+            <button
+              type="button"
               onClick={handleAddToCart}
-              className="w-auto self-start bg-teal-600 hover:bg-teal-700 text-white text-sm px-5 py-2 rounded"
+              className="self-start px-4 py-1.5 rounded text-sm border border-green-300 bg-green-100 text-green-800 hover:bg-green-200 transition-colors"
             >
               Add to Cart
-            </Button>
+            </button>
 
             {/* Return policy — plain text, no icon */}
             <Dialog>
@@ -708,33 +613,6 @@ function PoorUXPage() {
             </Dialog>
           </div>
         </div>
-
-        {/* Customer Reviews — kept but below fold */}
-        <section className="mt-8">
-          <h2 className="text-base font-semibold text-gray-700 mb-2">
-            Customer Reviews
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {reviews.map((review) => (
-              <div
-                key={review.name}
-                className="rounded-lg bg-white p-3 flex flex-col gap-1 border border-gray-200"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-600">
-                    {review.initials}
-                  </div>
-                  <p className="text-xs font-medium text-gray-700">
-                    {review.name}
-                  </p>
-                </div>
-                <p className="text-xs text-gray-500 leading-snug">
-                  {review.text}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
       </main>
 
       <footer className="border-t border-gray-200 py-4 mt-6">
@@ -757,39 +635,14 @@ function PoorUXPage() {
 }
 
 export default function App() {
-  const [view, setView] = useState<"good" | "poor">("good");
+  const isPoorUX =
+    typeof window !== "undefined" &&
+    window.location.pathname.startsWith("/poor-ux");
 
   return (
     <>
       <Toaster position="top-right" />
-      {/* Toggle bar */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 bg-white border border-slate-200 rounded-full shadow-lg px-2 py-1">
-        <button
-          type="button"
-          onClick={() => setView("good")}
-          data-ocid="view.tab"
-          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-            view === "good"
-              ? "bg-teal-600 text-white"
-              : "text-slate-500 hover:text-slate-700"
-          }`}
-        >
-          Good UX
-        </button>
-        <button
-          type="button"
-          onClick={() => setView("poor")}
-          data-ocid="view.tab"
-          className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-            view === "poor"
-              ? "bg-slate-700 text-white"
-              : "text-slate-500 hover:text-slate-700"
-          }`}
-        >
-          Poor UX
-        </button>
-      </div>
-      {view === "good" ? <GoodUXPage /> : <PoorUXPage />}
+      {isPoorUX ? <PoorUXPage /> : <GoodUXPage />}
     </>
   );
 }
